@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Thêm sản phẩm</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+
+    <nav>
+        <a th:href="@{/categories}">Danh mục</a>
+        <a th:href="@{/products}">Sản phẩm</a>
+    </nav>
+
+    <h1>Thêm sản phẩm</h1>
+
+    <div class="error" th:if="${#lists.isEmpty(categories)}">
+        Chưa có danh mục.
+        <a th:href="@{/categories/add}">Thêm danh mục trước</a>.
+    </div>
+
+    <form method="post"
+          th:action="@{/products/add}"
+          th:object="${product}">
+
+        <div class="form-group">
+            <label for="name">Tên sản phẩm</label>
+
+            <input type="text"
+                   id="name"
+                   th:field="*{name}"
+                   maxlength="200"
+                   placeholder="Ví dụ: iPhone 15"
+                   required>
+
+            <span class="field-error"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Giá (VNĐ)</label>
+
+            <input type="number"
+                   id="price"
+                   th:field="*{price}"
+                   min="0"
+                   max="9999999999999.99"
+                   step="0.01"
+                   placeholder="Ví dụ: 15000000"
+                   required>
+
+            <span class="field-error"
+                  th:if="${#fields.hasErrors('price')}"
+                  th:errors="*{price}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Mô tả</label>
+
+            <textarea id="description"
+                      th:field="*{description}"
+                      maxlength="2000"
+                      placeholder="Nhập mô tả sản phẩm"></textarea>
+
+            <span class="field-error"
+                  th:if="${#fields.hasErrors('description')}"
+                  th:errors="*{description}"></span>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Danh mục</label>
+
+            <select id="category"
+                    th:field="*{category.id}"
+                    required>
+
+                <option value="">-- Chọn danh mục --</option>
+
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:text="${category.name}"></option>
+            </select>
+
+            <span class="field-error"
+                  th:if="${#fields.hasErrors('category')}"
+                  th:errors="*{category}"></span>
+
+            <span class="field-error"
+                  th:if="${#fields.hasErrors('category.id')}"
+                  th:errors="*{category.id}"></span>
+        </div>
+
+        <button type="submit"
+                class="btn"
+                th:disabled="${#lists.isEmpty(categories)}">
+            Lưu sản phẩm
+        </button>
+
+        <a class="btn btn-back" th:href="@{/products}">
+            Quay lại
+        </a>
+
+    </form>
+
+</div>
+</body>
+</html>

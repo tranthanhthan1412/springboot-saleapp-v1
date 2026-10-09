@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quản lý sản phẩm</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+
+    <nav>
+        <a th:href="@{/categories}">Danh mục</a>
+        <a th:href="@{/products}">Sản phẩm</a>
+    </nav>
+
+    <h1>Quản lý sản phẩm</h1>
+
+    <div class="success"
+         th:if="${success}"
+         th:text="${success}"></div>
+
+    <div class="toolbar">
+        <a class="btn" th:href="@{/products/add}">
+            + Thêm sản phẩm
+        </a>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá</th>
+                <th>Mô tả</th>
+                <th>Danh mục</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:if="${#lists.isEmpty(products)}">
+                <td colspan="6">Chưa có sản phẩm.</td>
+            </tr>
+
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.name}"></td>
+
+                <td th:text="${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')} + ' đ'"></td>
+
+                <td th:text="${product.description}"></td>
+                <td th:text="${product.category.name}"></td>
+
+                <td class="actions">
+                    <a class="btn btn-edit"
+                       th:href="@{/products/edit/{id}(id=${product.id})}">
+                        Sửa
+                    </a>
+
+                    <form method="post"
+                          th:action="@{/products/delete/{id}(id=${product.id})}"
+                          onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
+                        <button type="submit" class="btn btn-delete">
+                            Xóa
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

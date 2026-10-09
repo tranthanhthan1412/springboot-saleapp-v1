@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sửa danh mục</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+
+    <h1>Sửa danh mục</h1>
+
+    <form method="post"
+          th:action="@{/categories/edit/{id}(id=${category.id})}"
+          th:object="${category}">
+
+        <div class="form-group">
+            <label for="name">Tên danh mục</label>
+
+            <input type="text"
+                   id="name"
+                   th:field="*{name}"
+                   maxlength="100"
+                   required>
+
+            <span class="field-error"
+                  th:if="${#fields.hasErrors('name')}"
+                  th:errors="*{name}"></span>
+        </div>
+
+        <button type="submit" class="btn">
+            Cập nhật
+        </button>
+
+        <a class="btn btn-back" th:href="@{/categories}">
+            Quay lại
+        </a>
+
+    </form>
+
+</div>
+</body>
+</html>
